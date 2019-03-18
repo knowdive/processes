@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="9.2.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="9.2.000" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="logfile" value="/Users/mattiafumagalli/Desktop/prova.log"/>
+    <parameter key="resultfile" value="/Users/mattiafumagalli/prova.res"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="read_excel" compatibility="9.2.000" expanded="true" height="68" name="Read Excel" width="90" x="45" y="340">
+        <parameter key="excel_file" value="C:\Users\marco\Desktop\K-Files\DOLCE\2019-03-14_Filtered_DOLCE-Lite_v3.9_2008-06-28_0.xlsx"/>
+        <parameter key="sheet_selection" value="sheet number"/>
+        <parameter key="sheet_number" value="1"/>
+        <parameter key="imported_cell_range" value="B1:D10485776"/>
+        <parameter key="encoding" value="SYSTEM"/>
+        <parameter key="first_row_as_names" value="true"/>
+        <list key="annotations"/>
+        <parameter key="date_format" value=""/>
+        <parameter key="time_zone" value="SYSTEM"/>
+        <parameter key="locale" value="English (United States)"/>
+        <parameter key="read_all_values_as_polynominal" value="false"/>
+        <list key="data_set_meta_data_information">
+          <parameter key="0" value="Subject.true.polynominal.attribute"/>
+          <parameter key="1" value="Predicate.true.polynominal.attribute"/>
+          <parameter key="2" value="Object.true.polynominal.attribute"/>
+        </list>
+        <parameter key="read_not_matching_values_as_missings" value="false"/>
+        <parameter key="datamanagement" value="double_array"/>
+        <parameter key="data_management" value="auto"/>
+      </operator>
+      <operator activated="true" class="read_excel" compatibility="9.2.000" expanded="true" height="68" name="Read Excel (2)" width="90" x="45" y="238">
+        <parameter key="excel_file" value="C:\Users\marco\Desktop\Internship\RapidMinerCode\knowledgeFilter\Predicate.xlsx"/>
+        <parameter key="sheet_selection" value="sheet number"/>
+        <parameter key="sheet_number" value="1"/>
+        <parameter key="imported_cell_range" value="A1"/>
+        <parameter key="encoding" value="SYSTEM"/>
+        <parameter key="first_row_as_names" value="true"/>
+        <list key="annotations"/>
+        <parameter key="date_format" value=""/>
+        <parameter key="time_zone" value="SYSTEM"/>
+        <parameter key="locale" value="English (United States)"/>
+        <parameter key="read_all_values_as_polynominal" value="false"/>
+        <list key="data_set_meta_data_information">
+          <parameter key="0" value="Predicate.true.polynominal.attribute"/>
+        </list>
+        <parameter key="read_not_matching_values_as_missings" value="false"/>
+        <parameter key="datamanagement" value="double_array"/>
+        <parameter key="data_management" value="auto"/>
+      </operator>
+      <operator activated="true" class="python_scripting:execute_python" compatibility="9.2.000" expanded="true" height="124" name="Execute Python" width="90" x="246" y="238">
+        <parameter key="script" value="import pandas as pd&#10;&#10;# Mandatory function for RapidMiner&#10;def rm_main(predicates, triples):    &#10;    # Create the DataFrame to save the vocabs' triples with the predicates present on the argument 'predicates'&#10;    df = pd.DataFrame(columns=[&quot;Type&quot;, &quot;Property&quot;])&#10;&#10;    # Iterate for every predicate present on 'predicates'&#10;    for ind_, r in predicates.iterrows():&#10;        # Create the list used to add the triples that has that predicate&#10;        list_ = list()&#10;        index_ = 0&#10;        # Iterate for every triples present on the file passed on the argument 'triples'&#10;        for index, row in triples.iterrows():&#10;            # if a triple has a specified Predicate&#10;            if(row[&quot;Predicate&quot;] in r[&quot;Predicate&quot;]):&#10;                # Save that triple on the list&#10;                list_.insert(index_,{&quot;Type&quot;: row[&quot;Subject&quot;], &quot;Property&quot;: row[&quot;Object&quot;]})&#10;                index_ += 1&#10;        # Save the information on the list to the DataFrame for each predicate checked&#10;        if(index_ and len(list_)):&#10;            df = df.append(list_)&#10;    # Return the DataFrame for RapidMiner usage&#10;    return df"/>
+        <parameter key="use_default_python" value="true"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+      </operator>
+      <operator activated="true" class="set_role" compatibility="9.2.000" expanded="true" height="82" name="Set Role" width="90" x="380" y="187">
+        <parameter key="attribute_name" value="Type"/>
+        <parameter key="target_role" value="label"/>
+        <list key="set_additional_roles"/>
+      </operator>
+      <operator activated="true" class="nominal_to_text" compatibility="9.2.000" expanded="true" height="82" name="Nominal to Text" width="90" x="380" y="289">
+        <parameter key="attribute_filter_type" value="all"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="nominal"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="file_path"/>
+        <parameter key="block_type" value="single_value"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="single_value"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+      </operator>
+      <operator activated="true" class="replace" compatibility="9.2.000" expanded="true" height="82" name="Replace (2)" width="90" x="514" y="187">
+        <parameter key="attribute_filter_type" value="all"/>
+        <parameter key="attribute" value=""/>
+        <parameter key="attributes" value=""/>
+        <parameter key="use_except_expression" value="false"/>
+        <parameter key="value_type" value="nominal"/>
+        <parameter key="use_value_type_exception" value="false"/>
+        <parameter key="except_value_type" value="file_path"/>
+        <parameter key="block_type" value="single_value"/>
+        <parameter key="use_block_type_exception" value="false"/>
+        <parameter key="except_block_type" value="single_value"/>
+        <parameter key="invert_selection" value="false"/>
+        <parameter key="include_special_attributes" value="false"/>
+        <parameter key="replace_what" value="([A-Z])"/>
+        <parameter key="replace_by" value=" $1"/>
+      </operator>
+      <operator activated="true" class="text:process_document_from_data" compatibility="8.1.000" expanded="true" height="82" name="Process Documents from Data" width="90" x="514" y="289">
+        <parameter key="create_word_vector" value="true"/>
+        <parameter key="vector_creation" value="Term Occurrences"/>
+        <parameter key="add_meta_information" value="true"/>
+        <parameter key="keep_text" value="true"/>
+        <parameter key="prune_method" value="none"/>
+        <parameter key="prune_below_percent" value="3.0"/>
+        <parameter key="prune_above_percent" value="30.0"/>
+        <parameter key="prune_below_rank" value="0.05"/>
+        <parameter key="prune_above_rank" value="0.95"/>
+        <parameter key="datamanagement" value="double_sparse_array"/>
+        <parameter key="data_management" value="auto"/>
+        <parameter key="select_attributes_and_weights" value="false"/>
+        <list key="specify_weights"/>
+        <process expanded="true">
+          <operator activated="true" class="text:tokenize" compatibility="8.1.000" expanded="true" height="68" name="Tokenize (3)" width="90" x="112" y="34">
+            <parameter key="mode" value="non letters"/>
+            <parameter key="characters" value=".:"/>
+            <parameter key="language" value="English"/>
+            <parameter key="max_token_length" value="3"/>
+          </operator>
+          <operator activated="true" class="text:transform_cases" compatibility="8.1.000" expanded="true" height="68" name="Transform Cases (3)" width="90" x="246" y="34">
+            <parameter key="transform_to" value="lower case"/>
+          </operator>
+          <operator activated="true" class="text:filter_stopwords_english" compatibility="8.1.000" expanded="true" height="68" name="Filter Stopwords (3)" width="90" x="380" y="34"/>
+          <operator activated="true" class="text:filter_by_length" compatibility="8.1.000" expanded="true" height="68" name="Filter Tokens (by Length)" width="90" x="514" y="34">
+            <parameter key="min_chars" value="3"/>
+            <parameter key="max_chars" value="25"/>
+          </operator>
+          <connect from_port="document" to_op="Tokenize (3)" to_port="document"/>
+          <connect from_op="Tokenize (3)" from_port="document" to_op="Transform Cases (3)" to_port="document"/>
+          <connect from_op="Transform Cases (3)" from_port="document" to_op="Filter Stopwords (3)" to_port="document"/>
+          <connect from_op="Filter Stopwords (3)" from_port="document" to_op="Filter Tokens (by Length)" to_port="document"/>
+          <connect from_op="Filter Tokens (by Length)" from_port="document" to_port="document 1"/>
+          <portSpacing port="source_document" spacing="0"/>
+          <portSpacing port="sink_document 1" spacing="0"/>
+          <portSpacing port="sink_document 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="true" class="write_excel" compatibility="9.2.000" expanded="true" height="82" name="Write Excel (2)" width="90" x="648" y="85">
+        <parameter key="excel_file" value="C:\Users\marco\Desktop\analysis-step\out2.xlsx"/>
+        <parameter key="file_format" value="xlsx"/>
+        <parameter key="encoding" value="SYSTEM"/>
+        <parameter key="sheet_name" value="RapidMiner Data"/>
+        <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
+        <parameter key="number_format" value="#.0"/>
+      </operator>
+      <operator activated="true" breakpoints="after" class="text:wordlist_to_data" compatibility="8.1.000" expanded="true" height="82" name="WordList to Data" width="90" x="648" y="442"/>
+      <operator activated="true" class="write_excel" compatibility="9.2.000" expanded="true" height="82" name="Write Excel" width="90" x="782" y="442">
+        <parameter key="excel_file" value="C:\Users\marco\Desktop\analysis-step\out.xlsx"/>
+        <parameter key="file_format" value="xlsx"/>
+        <parameter key="encoding" value="SYSTEM"/>
+        <parameter key="sheet_name" value="RapidMiner Data"/>
+        <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
+        <parameter key="number_format" value="#.0"/>
+      </operator>
+      <operator activated="true" class="python_scripting:execute_python" compatibility="9.2.000" expanded="true" height="124" name="Execute Python (2)" width="90" x="849" y="238">
+        <parameter key="script" value="# Import libraries&#10;import pandas as pd&#10;&#10;# Mandatory function for RapidMiner&#10;def rm_main(data):&#10;    # Drop the column 'in documents', that is equal to 'total'&#10;    data.drop(&quot;in documents&quot;, axis=1, inplace=True)&#10;&#10;    # Create the DataFrame used to save the occurrences of the Names present on the Element row&#10;    DF = pd.DataFrame(columns=[&quot;Element&quot;, &quot;Names&quot;])&#10;    # Iterate for every row present on data, for every Element&#10;    for index, row in data.iterrows():&#10;        # Create a list to save the Names present on that row&#10;        list_ = list()&#10;        # For evert column that indicates a Name&#10;        for column in data:&#10;            # Check if the Name is present on that Element/row&#10;            if(&quot;in class&quot; in column and row[column]): &#10;                # Save the Name on the list&#10;                name = column[10:-1]&#10;                list_.append(name)&#10;        # Save the correlation between Element and Names&#10;        DF = DF.append({&quot;Element&quot;: row[&quot;word&quot;], &quot;Names&quot;: list_}, ignore_index=True)&#10;&#10;    # Create the DataFrame used to save the table used to identify common Elements between Names&#10;    DTF = pd.DataFrame(columns=[&quot;total&quot;, &quot;Names&quot;, &quot;number&quot;, &quot;Elements&quot;])&#10;    # Create the set used to check if new Names has to be added or if existing Names has to be updated&#10;    set_ = set()&#10;    # Iterate for every row present on DF, for every Element and the relative Names&#10;    for index_, row in DF.iterrows():&#10;        # Check if new Names has to be added or if existing Names has to be updated&#10;        a = len(set_)&#10;        set_.add(str(row[&quot;Names&quot;]))&#10;        if(a &lt; len(set_)):&#10;            # Create a new row on the DataFrame for that Names&#10;            DTF.at[str(row[&quot;Names&quot;]), &quot;total&quot;] = len(row[&quot;Names&quot;])&#10;            DTF.at[str(row[&quot;Names&quot;]), &quot;Names&quot;] = row[&quot;Names&quot;]&#10;            DTF.at[str(row[&quot;Names&quot;]), &quot;Elements&quot;] = str(row[&quot;Element&quot;])&#10;            DTF.at[str(row[&quot;Names&quot;]), &quot;number&quot;] = 1&#10;        else:&#10;            # Update the row for that Names, adding the new Element&#10;            elements = str(DTF.at[str(row[&quot;Names&quot;]), &quot;Elements&quot;])&#10;            number = DTF.at[str(row[&quot;Names&quot;]), &quot;number&quot;]&#10;            DTF.at[str(row[&quot;Names&quot;]), &quot;Elements&quot;] = elements + &quot; , &quot; + str(row[&quot;Element&quot;])&#10;            DTF.at[str(row[&quot;Names&quot;]), &quot;number&quot;] = number + 1&#10;&#10;    # Create the DataFrame used to save the Cues&#10;    cue = pd.DataFrame(columns=[&quot;Class&quot;,&quot;Cue1&quot;, &quot;Cue2&quot;, &quot;Cue3&quot;])&#10;    # Iterate for every column present on data&#10;    for column in data:&#10;        # Checks if the column identify a Class&#10;        if(&quot;in class&quot; in column):&#10;            # Create the new column for the Cue in the input DataFrame, and calculate the values for every Element &#10;            index = data.columns.get_loc(column)&#10;            className = &quot;Cue(&quot; + column[10:-1] + &quot;)&quot;&#10;            tempColumn = data[column] / data[&quot;total&quot;]&#10;            data.insert(index, className, tempColumn)&#10;            &#10;            # Calculate the metrics of that Class&#10;            cue1 = data[className].sum()&#10;            cue2 = cue1 / data[column].sum()&#10;            cue3 = 1 - cue2&#10;            # Save the metrics of that Class&#10;            cue.at[column[10:-1], 'Class'] = column[10:-1]&#10;            cue.at[column[10:-1], 'Cue1'] = cue1&#10;            cue.at[column[10:-1], 'Cue2'] = cue2&#10;            cue.at[column[10:-1], 'Cue3'] = cue3&#10;&#10;    # Calculate the Knowledge metrics of the input&#10;    cue1 = cue[&quot;Cue1&quot;].sum()&#10;    cue2 = cue1 / data[&quot;total&quot;].sum()&#10;    cue3 = 1 - cue2&#10;    # Save the Knowledge metrics of the input&#10;    cue.at[&quot;KNOWLEDGE&quot;, 'Class'] = &quot;KNOWLEDGE&quot;&#10;    cue.at[&quot;KNOWLEDGE&quot;, 'Cue1'] = cue1&#10;    cue.at[&quot;KNOWLEDGE&quot;, 'Cue2'] = cue2&#10;    cue.at[&quot;KNOWLEDGE&quot;, 'Cue3'] = cue3&#10;&#10;    # Return the 3 DataFrames for RapidMiner usage&#10;    return data, cue, DTF"/>
+        <parameter key="use_default_python" value="true"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+      </operator>
+      <operator activated="true" class="write_excel" compatibility="9.2.000" expanded="true" height="82" name="Write Excel (5)" width="90" x="983" y="442">
+        <parameter key="excel_file" value="C:\Users\marco\Desktop\analysis-step\CrossData.xlsx"/>
+        <parameter key="file_format" value="xlsx"/>
+        <parameter key="encoding" value="SYSTEM"/>
+        <parameter key="sheet_name" value="RapidMiner Data"/>
+        <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
+        <parameter key="number_format" value="#.0"/>
+      </operator>
+      <operator activated="true" class="write_excel" compatibility="9.2.000" expanded="true" height="82" name="Write Excel (4)" width="90" x="983" y="340">
+        <parameter key="excel_file" value="C:\Users\marco\Desktop\analysis-step\CueData.xlsx"/>
+        <parameter key="file_format" value="xlsx"/>
+        <parameter key="encoding" value="SYSTEM"/>
+        <parameter key="sheet_name" value="RapidMiner Data"/>
+        <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
+        <parameter key="number_format" value="#.0"/>
+      </operator>
+      <operator activated="true" class="write_excel" compatibility="9.2.000" expanded="true" height="82" name="Write Excel (3)" width="90" x="983" y="238">
+        <parameter key="excel_file" value="C:\Users\marco\Desktop\analysis-step\FilteredData.xlsx"/>
+        <parameter key="file_format" value="xlsx"/>
+        <parameter key="encoding" value="SYSTEM"/>
+        <parameter key="sheet_name" value="RapidMiner Data"/>
+        <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
+        <parameter key="number_format" value="#.0"/>
+      </operator>
+      <connect from_op="Read Excel" from_port="output" to_op="Execute Python" to_port="input 2"/>
+      <connect from_op="Read Excel (2)" from_port="output" to_op="Execute Python" to_port="input 1"/>
+      <connect from_op="Execute Python" from_port="output 1" to_op="Set Role" to_port="example set input"/>
+      <connect from_op="Set Role" from_port="example set output" to_op="Nominal to Text" to_port="example set input"/>
+      <connect from_op="Nominal to Text" from_port="example set output" to_op="Replace (2)" to_port="example set input"/>
+      <connect from_op="Replace (2)" from_port="example set output" to_op="Process Documents from Data" to_port="example set"/>
+      <connect from_op="Process Documents from Data" from_port="example set" to_op="Write Excel (2)" to_port="input"/>
+      <connect from_op="Process Documents from Data" from_port="word list" to_op="WordList to Data" to_port="word list"/>
+      <connect from_op="Write Excel (2)" from_port="through" to_port="result 4"/>
+      <connect from_op="WordList to Data" from_port="example set" to_op="Write Excel" to_port="input"/>
+      <connect from_op="Write Excel" from_port="through" to_op="Execute Python (2)" to_port="input 1"/>
+      <connect from_op="Execute Python (2)" from_port="output 1" to_op="Write Excel (3)" to_port="input"/>
+      <connect from_op="Execute Python (2)" from_port="output 2" to_op="Write Excel (4)" to_port="input"/>
+      <connect from_op="Execute Python (2)" from_port="output 3" to_op="Write Excel (5)" to_port="input"/>
+      <connect from_op="Write Excel (5)" from_port="through" to_port="result 3"/>
+      <connect from_op="Write Excel (4)" from_port="through" to_port="result 2"/>
+      <connect from_op="Write Excel (3)" from_port="through" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+      <portSpacing port="sink_result 4" spacing="0"/>
+      <portSpacing port="sink_result 5" spacing="0"/>
+    </process>
+  </operator>
+</process>
