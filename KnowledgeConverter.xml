@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="9.2.001">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="9.2.001" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="read_excel" compatibility="9.2.001" expanded="true" height="68" name="Read CrossData" width="90" x="179" y="289">
+        <parameter key="excel_file" value="C:\Users\marco\Desktop\analysis-step\CrossData.xlsx"/>
+        <parameter key="sheet_selection" value="sheet number"/>
+        <parameter key="sheet_number" value="1"/>
+        <parameter key="imported_cell_range" value="A1"/>
+        <parameter key="encoding" value="SYSTEM"/>
+        <parameter key="first_row_as_names" value="true"/>
+        <list key="annotations"/>
+        <parameter key="date_format" value=""/>
+        <parameter key="time_zone" value="SYSTEM"/>
+        <parameter key="locale" value="English (United States)"/>
+        <parameter key="read_all_values_as_polynominal" value="false"/>
+        <list key="data_set_meta_data_information">
+          <parameter key="0" value="total.true.integer.attribute"/>
+          <parameter key="1" value="Names.true.polynominal.attribute"/>
+          <parameter key="2" value="number.true.integer.attribute"/>
+          <parameter key="3" value="Elements.true.polynominal.attribute"/>
+        </list>
+        <parameter key="read_not_matching_values_as_missings" value="false"/>
+        <parameter key="datamanagement" value="double_array"/>
+        <parameter key="data_management" value="auto"/>
+      </operator>
+      <operator activated="true" class="python_scripting:execute_python" compatibility="9.2.000" expanded="true" height="103" name="KnowledgeConverter" width="90" x="447" y="238">
+        <parameter key="script" value="# Import libraries&#10;from rdflib import Graph, Literal, RDFS, Namespace&#10;import pandas as pd&#10;import os&#10;&#10;# Mandatory function for RapidMiner&#10;def rm_main(data):&#10;    # Create the graph used to store the vocabulary&#10;    g = Graph()&#10;    # Create the Namespace for the vocabulary&#10;    n = Namespace(&quot;http://www.liveschema.org/test/&quot;)&#10;    g.bind(&quot;liveschema_test&quot;, n)&#10;    &#10;    # Sort the DataFrame&#10;    data = data.sort_values(&quot;total&quot;)&#10;    # Iterate for every row present on data&#10;    for index_, row in data.iterrows():&#10;        # Get the names of the domains and saves them using subClassOf and label&#10;        names = row[&quot;Names&quot;].replace(&quot; &quot;,&quot;&quot;).replace(&quot;[&quot;,&quot;&quot;).replace(&quot;]&quot;,&quot;&quot;).replace(&quot;'&quot;,&quot;&quot;).replace(&quot;,&quot;, &quot;_-_&quot;)&#10;        nameList = names.split(&quot;_-_&quot;)&#10;        print(names)&#10;        for name in nameList:&#10;            g.add((n[names], RDFS.label, Literal(name)))&#10;            if(name != names):&#10;                g.add((n[name], RDFS.subClassOf, n[names]))&#10;&#10;        # Map every element into its domain&#10;        elements = row[&quot;Elements&quot;].replace(&quot; &quot;,&quot;&quot;).replace(&quot;[&quot;,&quot;&quot;).replace(&quot;]&quot;,&quot;&quot;).replace(&quot;'&quot;,&quot;&quot;).split(&quot;,&quot;)&#10;        print(elements)&#10;        for element in elements:&#10;            g.add((n[element], RDFS.domain, n[names]))&#10;&#10;    # Create the directory in which store the new vocabulary&#10;    location = os.path.normpath(os.path.expanduser(&quot;~/Desktop/K-Files/Converted/&quot;))&#10;    if not os.path.isdir(location):&#10;        os.makedirs(location)&#10;    # Serialize the new vocabulary&#10;    g.serialize(destination=str(os.path.join(location, &quot;test.rdf&quot;)), format=&quot;pretty-xml&quot;)&#10;    g.serialize(destination=str(os.path.join(location, &quot;test.n3&quot;)), format=&quot;n3&quot;)&#10;    g.serialize(destination=str(os.path.join(location, &quot;test.nt&quot;)), format=&quot;nt&quot;)&#10;    g.serialize(destination=str(os.path.join(location, &quot;test.ttl&quot;)), format=&quot;turtle&quot;)&#10;    g.serialize(destination=str(os.path.join(location, &quot;test.json-ld&quot;)), format=&quot;json-ld&quot;)"/>
+        <parameter key="use_default_python" value="true"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+      </operator>
+      <connect from_op="Read CrossData" from_port="output" to_op="KnowledgeConverter" to_port="input 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <description align="left" color="yellow" colored="false" height="166" resized="true" width="183" x="402" y="353">Convert the CrossData obtained from the KnowledgeAnalyser and generate the relative new vocabulary in various formats into the folder Desktop/K-Files/Converted</description>
+    </process>
+  </operator>
+</process>
