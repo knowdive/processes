@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><process version="9.2.000">
+<?xml version="1.0" encoding="UTF-8"?><process version="9.2.001">
   <context>
     <input/>
     <output/>
     <macros/>
   </context>
-  <operator activated="true" class="process" compatibility="9.2.000" expanded="true" name="Process">
+  <operator activated="true" class="process" compatibility="9.2.001" expanded="true" name="Process">
     <parameter key="logverbosity" value="init"/>
     <parameter key="logfile" value="/Users/mattiafumagalli/Desktop/prova.log"/>
     <parameter key="resultfile" value="/Users/mattiafumagalli/prova.res"/>
@@ -14,29 +14,8 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="read_excel" compatibility="9.2.000" expanded="true" height="68" name="Read Knowledge" width="90" x="45" y="340">
-        <parameter key="excel_file" value="C:\Users\marco\Desktop\K-Files\DOLCE\2019-03-14_Filtered_DOLCE-Lite_v3.9_2008-06-28_0.xlsx"/>
-        <parameter key="sheet_selection" value="sheet number"/>
-        <parameter key="sheet_number" value="1"/>
-        <parameter key="imported_cell_range" value="B1:D10485776"/>
-        <parameter key="encoding" value="SYSTEM"/>
-        <parameter key="first_row_as_names" value="true"/>
-        <list key="annotations"/>
-        <parameter key="date_format" value=""/>
-        <parameter key="time_zone" value="SYSTEM"/>
-        <parameter key="locale" value="English (United States)"/>
-        <parameter key="read_all_values_as_polynominal" value="false"/>
-        <list key="data_set_meta_data_information">
-          <parameter key="0" value="Subject.true.polynominal.attribute"/>
-          <parameter key="1" value="Predicate.true.polynominal.attribute"/>
-          <parameter key="2" value="Object.true.polynominal.attribute"/>
-        </list>
-        <parameter key="read_not_matching_values_as_missings" value="false"/>
-        <parameter key="datamanagement" value="double_array"/>
-        <parameter key="data_management" value="auto"/>
-      </operator>
-      <operator activated="true" class="read_excel" compatibility="9.2.000" expanded="true" height="68" name="Read Predicate" width="90" x="45" y="238">
-        <parameter key="excel_file" value="C:\Users\marco\Desktop\Internship\RapidMinerCode\knowledgeFilter\Predicate.xlsx"/>
+      <operator activated="true" class="read_excel" compatibility="9.2.001" expanded="true" height="68" name="Read Filtered Knowledge" width="90" x="112" y="238">
+        <parameter key="excel_file" value="C:\Users\marco\Desktop\K-Files\IN\2019-04-18_Inherited_algo_v0.2_2014-01-24_0.xlsx"/>
         <parameter key="sheet_selection" value="sheet number"/>
         <parameter key="sheet_number" value="1"/>
         <parameter key="imported_cell_range" value="A1"/>
@@ -48,23 +27,56 @@
         <parameter key="locale" value="English (United States)"/>
         <parameter key="read_all_values_as_polynominal" value="false"/>
         <list key="data_set_meta_data_information">
-          <parameter key="0" value="Predicate.true.polynominal.attribute"/>
+          <parameter key="0" value="Date.true.polynominal.attribute"/>
+          <parameter key="1" value="Subject.true.polynominal.attribute"/>
+          <parameter key="2" value="Predicate.true.polynominal.attribute"/>
+          <parameter key="3" value="Object.true.polynominal.attribute"/>
+          <parameter key="4" value="SubjectTerm.true.polynominal.attribute"/>
+          <parameter key="5" value="PredicateTerm.true.polynominal.attribute"/>
+          <parameter key="6" value="ObjectTerm.true.polynominal.attribute"/>
+          <parameter key="7" value="Domain.true.polynominal.attribute"/>
+          <parameter key="8" value="Domain Version.true.polynominal.attribute"/>
+          <parameter key="9" value="Domain Date.true.polynominal.attribute"/>
+          <parameter key="10" value="URI.true.polynominal.attribute"/>
+          <parameter key="11" value="Title.true.polynominal.attribute"/>
+          <parameter key="12" value="Languages.true.polynominal.attribute"/>
+          <parameter key="13" value="Inherited.true.integer.attribute"/>
         </list>
         <parameter key="read_not_matching_values_as_missings" value="false"/>
         <parameter key="datamanagement" value="double_array"/>
         <parameter key="data_management" value="auto"/>
       </operator>
+      <operator activated="true" class="read_excel" compatibility="9.2.001" expanded="true" height="68" name="Read Predicate" width="90" x="45" y="340">
+        <parameter key="excel_file" value="C:\Users\marco\Desktop\Internship\InternshipCode\RapidMinerCode\knowledgeFilter\Predicate.xlsx"/>
+        <parameter key="sheet_selection" value="sheet number"/>
+        <parameter key="sheet_number" value="1"/>
+        <parameter key="imported_cell_range" value="A1"/>
+        <parameter key="encoding" value="SYSTEM"/>
+        <parameter key="first_row_as_names" value="true"/>
+        <list key="annotations"/>
+        <parameter key="date_format" value=""/>
+        <parameter key="time_zone" value="SYSTEM"/>
+        <parameter key="locale" value="English (United States)"/>
+        <parameter key="read_all_values_as_polynominal" value="false"/>
+        <list key="data_set_meta_data_information">
+          <parameter key="0" value="PredicateTerm.true.polynominal.attribute"/>
+        </list>
+        <parameter key="read_not_matching_values_as_missings" value="false"/>
+        <parameter key="datamanagement" value="double_array"/>
+        <parameter key="data_management" value="auto"/>
+        <description align="center" color="transparent" colored="false" width="126">Optional</description>
+      </operator>
       <operator activated="true" class="python_scripting:execute_python" compatibility="9.2.000" expanded="true" height="124" name="KnowledgeFilter" width="90" x="246" y="238">
-        <parameter key="script" value="import pandas as pd&#10;&#10;# Mandatory function for RapidMiner&#10;def rm_main(predicates, triples):    &#10;    # Create the DataFrame to save the vocabs' triples with the predicates present on the argument 'predicates'&#10;    df = pd.DataFrame(columns=[&quot;Type&quot;, &quot;Property&quot;])&#10;&#10;    # Iterate for every predicate present on 'predicates'&#10;    for ind_, r in predicates.iterrows():&#10;        # Create the list used to add the triples that has that predicate&#10;        list_ = list()&#10;        index_ = 0&#10;        # Iterate for every triples present on the file passed on the argument 'triples'&#10;        for index, row in triples.iterrows():&#10;            # if a triple has a specified Predicate&#10;            if(row[&quot;Predicate&quot;] in r[&quot;Predicate&quot;]):&#10;                # Save that triple on the list&#10;                list_.insert(index_,{&quot;Type&quot;: row[&quot;Object&quot;], &quot;Property&quot;: row[&quot;Subject&quot;]})&#10;                index_ += 1&#10;        # Save the information on the list to the DataFrame for each predicate checked&#10;        if(index_ and len(list_)):&#10;            df = df.append(list_)&#10;    # Return the DataFrame for RapidMiner usage&#10;    return df"/>
+        <parameter key="script" value="# Import libraries&#10;import pandas as pd&#10;&#10;# Mandatory function for RapidMiner&#10;def rm_main(triples, predicates = pd.DataFrame()):    &#10;    # Create the DataFrame to save the vocabs' triples with the predicates present on the argument 'predicates'&#10;    df = pd.DataFrame(columns=[&quot;Type&quot;, &quot;Property&quot;])&#10;&#10;    # Return all the triples if there is no predicate filtering&#10;    if((len(predicates) == 0)):&#10;        df[&quot;Type&quot;] = triples[&quot;ObjectTerm&quot;]&#10;        df[&quot;Property&quot;] = triples[&quot;SubjectTerm&quot;]&#10;        return df&#10;&#10;    # Iterate for every predicate present on 'predicates'&#10;    for ind_, r in predicates.iterrows():&#10;        # Create the list used to add the triples that has that predicate&#10;        list_ = list()&#10;        index_ = 0&#10;        # Iterate for every triples present on the file passed on the argument 'triples'&#10;        for index, row in triples.iterrows():&#10;            # if a triple has a specified PredicateTerm or the predicates are not set&#10;            if((str(row[&quot;PredicateTerm&quot;]) == str(r[&quot;PredicateTerm&quot;]))):&#10;                # Save that triple on the list&#10;                list_.insert(index_,{&quot;Type&quot;: row[&quot;ObjectTerm&quot;], &quot;Property&quot;: row[&quot;SubjectTerm&quot;]})&#10;                index_ += 1&#10;        # Save the information on the list to the DataFrame for each predicate checked&#10;        if(index_ and len(list_)):&#10;            df = df.append(list_)&#10;&#10;    # Return the DataFrame for RapidMiner usage&#10;    return df"/>
         <parameter key="use_default_python" value="true"/>
         <parameter key="package_manager" value="conda (anaconda)"/>
       </operator>
-      <operator activated="true" class="set_role" compatibility="9.2.000" expanded="true" height="82" name="Set Role" width="90" x="380" y="187">
+      <operator activated="true" class="set_role" compatibility="9.2.001" expanded="true" height="82" name="Set Role" width="90" x="380" y="187">
         <parameter key="attribute_name" value="Type"/>
         <parameter key="target_role" value="label"/>
         <list key="set_additional_roles"/>
       </operator>
-      <operator activated="true" class="nominal_to_text" compatibility="9.2.000" expanded="true" height="82" name="Nominal to Text" width="90" x="380" y="289">
+      <operator activated="true" class="nominal_to_text" compatibility="9.2.001" expanded="true" height="82" name="Nominal to Text" width="90" x="380" y="289">
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
         <parameter key="attributes" value=""/>
@@ -78,7 +90,7 @@
         <parameter key="invert_selection" value="false"/>
         <parameter key="include_special_attributes" value="false"/>
       </operator>
-      <operator activated="true" class="replace" compatibility="9.2.000" expanded="true" height="82" name="Replace (2)" width="90" x="514" y="187">
+      <operator activated="true" class="replace" compatibility="9.2.001" expanded="true" height="82" name="Replace (2)" width="90" x="514" y="187">
         <parameter key="attribute_filter_type" value="all"/>
         <parameter key="attribute" value=""/>
         <parameter key="attributes" value=""/>
@@ -133,7 +145,7 @@
           <portSpacing port="sink_document 2" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="write_excel" compatibility="9.2.000" expanded="true" height="82" name="Write Excel (2)" width="90" x="648" y="85">
+      <operator activated="true" class="write_excel" compatibility="9.2.001" expanded="true" height="82" name="Write Excel (2)" width="90" x="648" y="85">
         <parameter key="excel_file" value="C:\Users\marco\Desktop\analysis-step\out2.xlsx"/>
         <parameter key="file_format" value="xlsx"/>
         <parameter key="encoding" value="SYSTEM"/>
@@ -142,7 +154,7 @@
         <parameter key="number_format" value="#.0"/>
       </operator>
       <operator activated="true" breakpoints="after" class="text:wordlist_to_data" compatibility="8.1.000" expanded="true" height="82" name="WordList to Data" width="90" x="648" y="238"/>
-      <operator activated="true" class="write_excel" compatibility="9.2.000" expanded="true" height="82" name="Write Excel" width="90" x="782" y="238">
+      <operator activated="true" class="write_excel" compatibility="9.2.001" expanded="true" height="82" name="Write Excel" width="90" x="782" y="238">
         <parameter key="excel_file" value="C:\Users\marco\Desktop\analysis-step\out.xlsx"/>
         <parameter key="file_format" value="xlsx"/>
         <parameter key="encoding" value="SYSTEM"/>
@@ -155,7 +167,7 @@
         <parameter key="use_default_python" value="true"/>
         <parameter key="package_manager" value="conda (anaconda)"/>
       </operator>
-      <operator activated="true" class="write_excel" compatibility="9.2.000" expanded="true" height="82" name="Write Cross" width="90" x="983" y="442">
+      <operator activated="true" class="write_excel" compatibility="9.2.001" expanded="true" height="82" name="Write Cross" width="90" x="983" y="442">
         <parameter key="excel_file" value="C:\Users\marco\Desktop\analysis-step\CrossData.xlsx"/>
         <parameter key="file_format" value="xlsx"/>
         <parameter key="encoding" value="SYSTEM"/>
@@ -163,7 +175,7 @@
         <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
         <parameter key="number_format" value="#.0"/>
       </operator>
-      <operator activated="true" class="write_excel" compatibility="9.2.000" expanded="true" height="82" name="Write Cue" width="90" x="983" y="340">
+      <operator activated="true" class="write_excel" compatibility="9.2.001" expanded="true" height="82" name="Write Cue" width="90" x="983" y="340">
         <parameter key="excel_file" value="C:\Users\marco\Desktop\analysis-step\CueData.xlsx"/>
         <parameter key="file_format" value="xlsx"/>
         <parameter key="encoding" value="SYSTEM"/>
@@ -171,7 +183,7 @@
         <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
         <parameter key="number_format" value="#.0"/>
       </operator>
-      <operator activated="true" class="write_excel" compatibility="9.2.000" expanded="true" height="82" name="Write Filtered" width="90" x="983" y="238">
+      <operator activated="true" class="write_excel" compatibility="9.2.001" expanded="true" height="82" name="Write Filtered" width="90" x="983" y="238">
         <parameter key="excel_file" value="C:\Users\marco\Desktop\analysis-step\FilteredData.xlsx"/>
         <parameter key="file_format" value="xlsx"/>
         <parameter key="encoding" value="SYSTEM"/>
@@ -179,8 +191,8 @@
         <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
         <parameter key="number_format" value="#.0"/>
       </operator>
-      <connect from_op="Read Knowledge" from_port="output" to_op="KnowledgeFilter" to_port="input 2"/>
-      <connect from_op="Read Predicate" from_port="output" to_op="KnowledgeFilter" to_port="input 1"/>
+      <connect from_op="Read Filtered Knowledge" from_port="output" to_op="KnowledgeFilter" to_port="input 1"/>
+      <connect from_op="Read Predicate" from_port="output" to_op="KnowledgeFilter" to_port="input 2"/>
       <connect from_op="KnowledgeFilter" from_port="output 1" to_op="Set Role" to_port="example set input"/>
       <connect from_op="Set Role" from_port="example set output" to_op="Nominal to Text" to_port="example set input"/>
       <connect from_op="Nominal to Text" from_port="example set output" to_op="Replace (2)" to_port="example set input"/>
