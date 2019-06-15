@@ -6,6 +6,7 @@ In this repository you can find 2 RapidMiner's Processes:
     - it stores a .rdf, .n3, .nt, .json-ld, .ttl serialized version of each vocabulary
     - it saves a Excel Files containing all the triples of every vocabulary (eventually filtering on the predicates) (also with inheritance)
     - it saves a CSV File containing all the triples of every vocabulary (eventually filtering on the predicates) (also with inheritance)
+    - it serializes vocabularies in the given formats
  - KnowledgeAnalyser: this Process will use the Filtered vocabularies and the list of Predicates(optional) given as input to analyse it and generate more knowledge
  - KnowledgeConverter: this Process will use the CrossData.xlsx file, obtained from KnowledgeAnalyser, to create a new vocabulary, serialized in different formats(.rdf, .n3, .nt, .json-ld, .ttl)
 
