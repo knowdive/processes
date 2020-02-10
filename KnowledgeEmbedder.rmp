@@ -14,7 +14,7 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="set_macros" compatibility="9.2.001" expanded="true" height="68" name="Set pyKEEN macrs" width="90" x="380" y="85">
+      <operator activated="true" class="set_macros" compatibility="9.2.001" expanded="true" height="68" name="Set pyKEEN macros" width="90" x="246" y="595">
         <list key="macros">
           <parameter key="FolderPath" value="/home/marco/Documents/Internship/resources/Vocabularies/example"/>
           <parameter key="DatasetFinalName" value="example"/>
@@ -32,9 +32,10 @@
           <parameter key="filter_negative_triples" value="True"/>
           <parameter key="random_seed" value="2"/>
           <parameter key="preferred_device" value="gpu"/>
+          <parameter key="maximum_number_of_hpo_iters" value="3"/>
         </list>
       </operator>
-      <operator activated="true" class="read_csv" compatibility="9.2.001" expanded="true" height="68" name="Read Triples CSV" width="90" x="45" y="289">
+      <operator activated="true" class="read_csv" compatibility="9.2.001" expanded="true" height="68" name="Read Triples CSV" width="90" x="179" y="289">
         <parameter key="csv_file" value="/home/marco/Desktop/lov_ptop.csv"/>
         <parameter key="column_separators" value=","/>
         <parameter key="trim_lines" value="false"/>
@@ -67,19 +68,19 @@
           <parameter key="7" value="Domain.true.polynominal.attribute"/>
           <parameter key="8" value="Domain Version.true.polynominal.attribute"/>
         </list>
-        <parameter key="read_not_matching_values_as_missings" value="false"/>
+        <parameter key="read_not_matching_values_as_missings" value="true"/>
         <parameter key="datamanagement" value="double_array"/>
         <parameter key="data_management" value="auto"/>
       </operator>
-      <operator activated="true" class="python_scripting:execute_python" compatibility="9.2.000" expanded="true" height="103" name="Parse input pyKEEN" width="90" x="246" y="289">
+      <operator activated="true" class="python_scripting:execute_python" compatibility="9.2.000" expanded="true" height="103" name="Parse input pyKEEN" width="90" x="447" y="238">
         <parameter key="script" value="# Import libraries&#10;import pandas as pd&#10;from random import random&#10;&#10;# Mandatory function for RapidMiner&#10;def rm_main(triples):&#10;&#10;&#9;# Create output files&#10;&#9;train = open(r&quot;%{FolderPath}/%{DatasetFinalName}.tsv&quot;, &quot;w+&quot;) &#10; &#10;&#9;# Iterate over every triples row&#10;&#9;for index, row in triples.iterrows():&#10;&#9;&#9;train.write(str(row[&quot;Subject&quot;])+&quot;\t&quot;+str(row[&quot;Predicate&quot;])+&quot;\t&quot;+str(row[&quot;Object&quot;])+&quot;\n&quot;) &#9;&#10;&#9;&#9;&#10;&#9;# Close Files&#10;&#9;train.close() &#10;&#9;&#10;&#9;return "/>
         <parameter key="use_default_python" value="false"/>
         <parameter key="package_manager" value="specific python binaries"/>
         <parameter key="venvw_environment" value="/home/marco/venv/bin/python3"/>
         <parameter key="python_binary" value="/home/marco/venv/bin/python3"/>
       </operator>
-      <operator activated="true" class="python_scripting:execute_python" compatibility="9.2.000" expanded="true" height="103" name="pyKEEN" width="90" x="514" y="289">
-        <parameter key="script" value="import pykeen&#10;&#10;def rm_main():&#10;&#10;&#9;config = dict(&#10;&#9;    training_set_path           = '%{FolderPath}/%{DatasetFinalName}.tsv',&#10;&#9;    execution_mode              = '%{execution_mode}',&#10;&#9;    kg_embedding_model_name     = '%{kg_embedding_model_name}',&#10;&#9;    embedding_dim               = %{embedding_dim},&#10;&#9;    normalization_of_entities   = %{normalization_of_entities},  # corresponds to L2&#10;&#9;    scoring_function            = %{scoring_function},  # corresponds to L1&#10;&#9;    margin_loss                 = %{margin_loss},&#10;&#9;    learning_rate               = %{learning_rate},&#10;&#9;    batch_size                  = %{batch_size},&#10;&#9;    num_epochs                  = %{num_epochs},&#10;&#9;    test_set_ratio              = %{test_set_ratio},&#10;&#9;    filter_negative_triples     = %{filter_negative_triples},&#10;&#9;    random_seed                 = %{random_seed},&#10;&#9;    preferred_device            = '%{preferred_device}',&#10;&#9;)&#10;&#10;&#9;results = pykeen.run(&#10;&#9;    config=config,&#10;&#9;    output_directory=&quot;%{ResultDirectory}&quot;,&#10;&#9;)&#10;&#10;&#10;&#9;# Create output files&#10;&#9;res = open(r&quot;%{ResultDirectory}/%{DatasetFinalName}_trained_model.txt&quot;, &quot;w+&quot;) &#10;&#9;res.write(str(results.trained_model)+&quot;\n&quot;) &#9;&#10;&#9;res.close() &#10;&#10;&#10;&#9;# Create output files&#10;&#9;res = open(r&quot;%{ResultDirectory}/%{DatasetFinalName}_losses.txt&quot;, &quot;w+&quot;) &#10;&#9;res.write(str(results.losses)+&quot;\n&quot;) &#9;&#10;&#9;res.close() &#10;&#10;&#10;&#9;# Create output files&#10;&#9;res = open(r&quot;%{ResultDirectory}/%{DatasetFinalName}_evaluation_summary.txt&quot;, &quot;w+&quot;) &#10;&#9;res.write(str(results.evaluation_summary)+&quot;\n&quot;) &#9;&#10;&#9;res.close() "/>
+      <operator activated="true" class="python_scripting:execute_python" compatibility="9.2.000" expanded="true" height="103" name="pyKEEN" width="90" x="715" y="238">
+        <parameter key="script" value="import pykeen&#10;&#10;def rm_main():&#10;&#10;&#9;config = dict(&#10;&#9;    training_set_path           = '%{FolderPath}/%{DatasetFinalName}.tsv',&#10;&#9;    execution_mode              = '%{execution_mode}',&#10;&#9;    kg_embedding_model_name     = '%{kg_embedding_model_name}',&#10;&#9;    embedding_dim               = %{embedding_dim},&#10;&#9;    normalization_of_entities   = %{normalization_of_entities},  # corresponds to L2&#10;&#9;    scoring_function            = %{scoring_function},  # corresponds to L1&#10;&#9;    margin_loss                 = %{margin_loss},&#10;&#9;    learning_rate               = %{learning_rate},&#10;&#9;    batch_size                  = %{batch_size},&#10;&#9;    num_epochs                  = %{num_epochs},&#10;&#9;    test_set_ratio              = %{test_set_ratio},&#10;&#9;    filter_negative_triples     = %{filter_negative_triples},&#10;&#9;    random_seed                 = %{random_seed},&#10;&#9;    preferred_device            = '%{preferred_device}',&#10;&#9;    maximum_number_of_hpo_iters = %{maximum_number_of_hpo_iters},&#10;&#9;)&#10;&#10;&#9;results = pykeen.run(&#10;&#9;    config=config,&#10;&#9;    output_directory=&quot;%{ResultDirectory}&quot;,&#10;&#9;)&#10;&#10;&#10;&#9;# Create output files&#10;&#9;res = open(r&quot;%{ResultDirectory}/%{DatasetFinalName}_trained_model.txt&quot;, &quot;w+&quot;) &#10;&#9;res.write(str(results.trained_model)+&quot;\n&quot;) &#9;&#10;&#9;res.close() &#10;&#10;&#10;&#9;# Create output files&#10;&#9;res = open(r&quot;%{ResultDirectory}/%{DatasetFinalName}_losses.txt&quot;, &quot;w+&quot;) &#10;&#9;res.write(str(results.losses)+&quot;\n&quot;) &#9;&#10;&#9;res.close() &#10;&#10;&#10;&#9;# Create output files&#10;&#9;res = open(r&quot;%{ResultDirectory}/%{DatasetFinalName}_evaluation_summary.txt&quot;, &quot;w+&quot;) &#10;&#9;res.write(str(results.evaluation_summary)+&quot;\n&quot;) &#9;&#10;&#9;res.close() "/>
         <parameter key="use_default_python" value="false"/>
         <parameter key="package_manager" value="specific python binaries"/>
         <parameter key="python_binary" value="/home/marco/venv/bin/python3"/>
@@ -90,7 +91,11 @@
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
       <portSpacing port="sink_result 2" spacing="0"/>
-      <description align="center" color="blue" colored="true" height="497" resized="true" width="470" x="190" y="10">pyKEEN&lt;br/&gt;https://pykeen.readthedocs.io/en/latest/cli/train_and_evaluate.html</description>
+      <description align="center" color="blue" colored="true" height="217" resized="true" width="466" x="393" y="178">pyKEEN Pipeline&lt;br&gt;</description>
+      <description align="center" color="blue" colored="true" height="204" resized="true" width="360" x="10" y="182">Use the input csv generated by LiveSchema&lt;br&gt;Using the Import Configuration Wizard:&lt;br&gt;Remember to tick the Use Quotes = &amp;quot;&lt;br&gt;Remeber to unTick the Use Comments&lt;br&gt;Remember to tick the Replace errors with missing values</description>
+      <description align="center" color="gray" colored="true" height="200" resized="true" width="623" x="10" y="507">pyKEEN (https://github.com/SmartDataAnalytics/PyKEEN)&lt;br&gt;Overview: https://pykeen.readthedocs.io/en/latest/overview.html&lt;br&gt;Information about the configuration can be found: https://pykeen.readthedocs.io/en/latest/cli/train_and_evaluate.html</description>
+      <description align="center" color="gray" colored="true" height="83" resized="true" width="272" x="71" y="374">Also Read from Excel using the output of the KnowledgeParser works</description>
+      <description align="center" color="yellow" colored="false" height="105" resized="true" width="304" x="254" y="37">Before using this module you first have to run on the terminal the following command:&lt;br&gt;pip install pykeen</description>
     </process>
   </operator>
 </process>
