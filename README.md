@@ -24,4 +24,5 @@ In order to use those RapidMiner's Processes, you need to:
     - xlrd
     - xlsxwriter
     - networkx
-    - pyKEEN
+    - pykeen
+    - numpy
