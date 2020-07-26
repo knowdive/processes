@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.013">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="ontology:load_axioms" compatibility="5.1.000" expanded="true" height="60" name="Load OWL Axioms" width="90" x="112" y="210">
+        <parameter key="data_source" value="/home/marco/Desktop/Alloy/gufo.owl"/>
+        <parameter key="renderer_method" value="DLSyntax"/>
+        <parameter key="only_logical_axioms" value="false"/>
+        <parameter key="keep_TBox_axioms" value="true"/>
+        <parameter key="keep_RBox_axioms" value="true"/>
+        <parameter key="keep_ABox_axioms" value="true"/>
+      </operator>
+      <operator activated="true" class="ontology:filter_axioms" compatibility="5.1.000" expanded="true" height="76" name="Filter OWL Axioms" width="90" x="246" y="210">
+        <parameter key="match_expression" value="..*"/>
+        <parameter key="invert_condition" value="false"/>
+      </operator>
+      <operator activated="true" class="ontology:axioms_to_data" compatibility="5.1.000" expanded="true" height="60" name="Axioms to Data" width="90" x="380" y="210">
+        <parameter key="axiom_attribute" value="DLAxioms"/>
+        <parameter key="renderer_method" value="DLSyntax"/>
+      </operator>
+      <operator activated="true" class="multiply" compatibility="5.3.013" expanded="true" height="94" name="Multiply" width="90" x="514" y="210"/>
+      <operator activated="true" class="write_csv" compatibility="5.3.013" expanded="true" height="76" name="Write CSV" width="90" x="715" y="255">
+        <parameter key="csv_file" value="/home/marco/Desktop/Alloy/gufoDL.csv"/>
+        <parameter key="column_separator" value=","/>
+        <parameter key="write_attribute_names" value="true"/>
+        <parameter key="quote_nominal_values" value="true"/>
+        <parameter key="format_date_attributes" value="true"/>
+        <parameter key="append_to_file" value="true"/>
+        <parameter key="encoding" value="SYSTEM"/>
+      </operator>
+      <operator activated="true" class="write_excel" compatibility="5.3.013" expanded="true" height="76" name="Write Excel" width="90" x="715" y="165">
+        <parameter key="excel_file" value="/home/marco/Desktop/Alloy/gufoDL.xlsx"/>
+        <parameter key="file_format" value="xlsx"/>
+        <parameter key="encoding" value="SYSTEM"/>
+        <parameter key="sheet_name" value="RapidMiner Data"/>
+        <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
+        <parameter key="number_format" value="#.0"/>
+      </operator>
+      <connect from_op="Load OWL Axioms" from_port="output" to_op="Filter OWL Axioms" to_port="axioms"/>
+      <connect from_op="Filter OWL Axioms" from_port="axioms" to_op="Axioms to Data" to_port="axioms"/>
+      <connect from_op="Axioms to Data" from_port="example set" to_op="Multiply" to_port="input"/>
+      <connect from_op="Multiply" from_port="output 1" to_op="Write Excel" to_port="input"/>
+      <connect from_op="Multiply" from_port="output 2" to_op="Write CSV" to_port="input"/>
+      <connect from_op="Write CSV" from_port="through" to_port="result 2"/>
+      <connect from_op="Write Excel" from_port="through" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+    </process>
+  </operator>
+</process>

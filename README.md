@@ -10,6 +10,7 @@ In this repository you can find 2 RapidMiner's Processes:
  - KnowledgeAnalyser: this Process will use the Filtered vocabularies and the list of Predicates(optional) given as input to analyse it and generate more knowledge
  - KnowledgeConverter: this Process will use the CrossData.xlsx file, obtained from KnowledgeAnalyser, to create a new vocabulary, serialized in different formats(.rdf, .n3, .nt, .json-ld, .ttl)
  - KnowledgeEmbedder: this Process will use a csv parsed file to obtain the Knowledge Embedding of the relative parsed Knowledge Graph using the python library pyKEEN
+ - OWL2DL: this Process will use the OWL file and returns the .csv and .xlsx containing its relative DL Axioms (only works with outdated RapidMiner+Ontology extension)
 
 ## HowTo
 In order to use those RapidMiner's Processes, you need to:
@@ -26,3 +27,4 @@ In order to use those RapidMiner's Processes, you need to:
     - networkx
     - pykeen
     - numpy
+    - ontospy
