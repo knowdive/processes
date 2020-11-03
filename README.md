@@ -13,6 +13,7 @@ In this repository you can find 2 RapidMiner's Processes:
  - OWL2DL: this Process will use the OWL file and returns the .csv and .xlsx containing its relative DL Axioms (only works with outdated RapidMiner+Ontology extension)
  - AlloyConverter: this Process will get the OWL file, related DL Axioms, and Alloy utils files as input and produce as output the desired Alloy specifications
  - AlloyResults2OWL: this Process will get a text file with the result of the Alloy Analyser and add its istances to the OWL given as input
+ - OWL2Alloy: this Process will get the OWL file, compute its related DL Axioms, and get the Alloy utils file as input and produce as output the desired Alloy specification
 
 ## HowTo
 In order to use those RapidMiner's Processes, you need to:
@@ -30,3 +31,4 @@ In order to use those RapidMiner's Processes, you need to:
     - pykeen
     - numpy
     - ontospy
+  - add rmx_ontology = 5.1 and rmx_text = 9.3 as RapidMiner Extensions (for OWL2Alloy)
