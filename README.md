@@ -14,6 +14,7 @@ In this repository you can find 2 RapidMiner's Processes:
  - AlloyConverter: this Process will get the OWL file, related DL Axioms, and Alloy utils files as input and produce as output the desired Alloy specifications
  - AlloyResults2OWL: this Process will get a text file with the result of the Alloy Analyser and add its istances to the OWL given as input
  - OWL2Alloy: this Process will get the OWL file, compute its related DL Axioms, and get the Alloy utils file as input and produce as output the desired Alloy specification
+ - OWL2AlloyComplete: this Process will get the OWL file, compute its related DL Axioms, save them allowing for updates, and get the Alloy utils file as input and produce as output the desired Alloy specification
 
 ## HowTo
 In order to use those RapidMiner's Processes, you need to:
